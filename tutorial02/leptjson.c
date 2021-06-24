@@ -4,8 +4,8 @@
 #include <math.h>    /* HUGE_VAL */
 #include <stdlib.h>  /* NULL, strtod() */
 
-#define EXPECT(c, ch)       do { assert(*c->json == (ch)); } while(0)
-/* #define EXPECT(c, ch)       do { assert(*c->json == (ch)); c->json++; } while(0) */
+
+#define EXPECT(c, ch)       do { assert(*c->json == (ch)); c->json++; } while(0)
 #define ISDIGIT(ch)         ((ch) >= '0' && (ch) <= '9')
 #define ISDIGIT1TO9(ch)     ((ch) >= '1' && (ch) <= '9')
 
@@ -23,9 +23,9 @@ static void lept_parse_whitespace(lept_context* c) {
 static int lept_parse_literal(lept_context* c, lept_value* v, const char* literal, lept_type type) {
     size_t i;
     EXPECT(c, literal[0]);
-    for(i = 0; literal[i] != '\0'; ++i) /* /0 */
+    for(i = 0; literal[i + 1] != '\0'; ++i) /* /0 */
     {
-        if((*c -> json) != literal[i])
+        if((*c -> json) != literal[i + 1])
             return LEPT_PARSE_INVALID_VALUE;
         ++c->json;
     }
